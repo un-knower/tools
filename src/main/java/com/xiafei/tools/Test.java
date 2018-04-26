@@ -1,16 +1,16 @@
 package com.xiafei.tools;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.xiafei.tools.common.CloneUtil;
 import com.xiafei.tools.common.check.CheckUtils;
 import lombok.Data;
+import org.apache.commons.lang3.SerializationUtils;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import java.net.InetAddress;
-import java.net.NetworkInterface;
+import java.io.Serializable;
 import java.net.SocketException;
 import java.net.UnknownHostException;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -25,7 +25,7 @@ import java.util.List;
  * @since java 1.8.0
  */
 @Service
-public class Test {
+public class Test implements Serializable {
 
     public static void main(String[] args) throws UnknownHostException, SocketException {
 //        String json = "{\"systemId\":\"AGENCY_RM\",\"data\":{\"applyNo\":\"2018041114214100797C0A882DF00017\",\"confirmContractPath\":\"/files/apply/2018041114214100797C0A882DF00017/GOODS_CONFIRM_CONTRACT/GOODS_CONFIRM_CONTRACT.pdf\",\"goodsList\":[{\"goodsModel\":\"EP901\",\"serialNo\":\"1,2\",\"softVersion\":\"高级版\"}]},\"service\":\"lease_apply_goods_confirm\",\"sign\":\"aQYaFa1m1pvFZsu+Qa4dQH/PWdb9YV2cTgdgvSN29fjDwq4MBHTEiS5+0l3N1IFyyI8EKpMOSTFqnfDHNaQXjFJg2LRdidbiILKJGA1u6/cVtlMFsamI+qmprPmDjUnR0HxdLrIwHCIJu2jQaTCxMNRoxgagfU/BfMVeXBQhBIE\\u003d\",\"version\":\"1.0\",\"serialNo\":\"2018041118473700204C0A882DF00048\"}";
@@ -39,15 +39,30 @@ public class Test {
 //        System.out.println(System.currentTimeMillis() - start);
 //        System.out.println(Arrays.toString("\u003d".getBytes()));
 ////        System.out.println(Arrays.toString("=".getBytes()));
-        final NetworkInterface byInetAddress = NetworkInterface.getByInetAddress(InetAddress.getLocalHost());
-        final byte[] hardwareAddress = byInetAddress.getHardwareAddress();
-        System.out.println(Arrays.toString(hardwareAddress));
+//        final NetworkInterface byInetAddress = NetworkInterface.getByInetAddress(InetAddress.getLocalHost());
+//        final byte[] hardwareAddress = byInetAddress.getHardwareAddress();
+//        System.out.println(ArrayUtils.toString(hardwareAddress));
+//        System.out.println(Arrays.toString(hardwareAddress));
+        final Test obj = new Test();
+        long start = System.currentTimeMillis();
+        final int times = 1000000;
+        for (int i = 0; i < times; i++) {
+            SerializationUtils.clone(obj);
+        }
+        System.out.println("SerializationUtils 耗时:" + (System.currentTimeMillis() - start));
+        start = System.currentTimeMillis();
+        for (int i = 0; i < times; i++) {
+            CloneUtil.clone(obj);
+        }
+        System.out.println("CloneUtil 耗时:" + (System.currentTimeMillis() - start));
+
     }
 
     @Scheduled(cron = "*/30 * * * * ?")
     public void testSchedule() {
         System.out.println("task1");
     }
+
     @Scheduled(cron = "*/30 * * * * ?")
     public void testSchedule2() {
         System.out.println("task2");

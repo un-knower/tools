@@ -1,7 +1,7 @@
 package com.xiafei.tools.spring.springboot.aspect;
 
 
-import com.virgo.finance.lease.core.service.outer.CheckUtils;
+import com.xiafei.tools.common.check.CheckUtils;
 
 /**
  * <P>Description: 请求vo基类. </P>

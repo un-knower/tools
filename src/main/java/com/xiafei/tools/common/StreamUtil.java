@@ -38,9 +38,8 @@ public class StreamUtil {
      * 关闭流.
      *
      * @param streams  流
-     * @param serialNo 业务流水号，记日志用，可以为空
      */
-    public static void closeStream(final String serialNo, final Closeable... streams) {
+    public static void closeStream(final Closeable... streams) {
 
         if (streams != null) {
             for (Closeable stream : streams) {
@@ -48,7 +47,7 @@ public class StreamUtil {
                     try {
                         stream.close();
                     } catch (IOException e) {
-                        log.warn("[{}]stream 关闭失败", serialNo, e);
+                        log.warn("stream 关闭失败", e);
                     }
                 }
             }
