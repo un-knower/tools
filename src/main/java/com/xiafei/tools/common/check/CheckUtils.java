@@ -63,7 +63,7 @@ public class CheckUtils {
             throw new Exception(nullDesc);
         }
         for (Object obj : objs) {
-            checkObj(obj);
+            checkObj(obj, null);
         }
     }
 
@@ -72,8 +72,9 @@ public class CheckUtils {
      *
      * @param obj   要检查的对象
      * @param clazz 要检查的对象class
+     * @param name
      */
-    private static void checkPojo(final Object obj, final Class clazz) throws Exception {
+    private static void checkPojo(final Object obj, final Class clazz, final String name) throws Exception {
         final List<Field> fieldList = new ArrayList<>(Arrays.asList(clazz.getDeclaredFields()));
         Class tempClass = clazz;
         while (true) {
@@ -99,24 +100,30 @@ public class CheckUtils {
             try {
                 propertyValue = field.get(obj);
             } catch (IllegalAccessException e) {
-                log.error("反射获取第一层属性值对象报错", e);
+                log.error("反射获取属性值对象报错", e);
                 throw new Exception(field.getName() + "校验失败");
             }
-            checkObj(propertyValue);
+            checkObj(propertyValue, name == null ? field.getName() : name.concat(".").concat(field.getName()));
         }
     }
 
 
-    private static void checkObj(final Object obj) throws Exception {
+    private static void checkObj(final Object obj, final String name) throws Exception {
+        final String errorMsg;
+        if (name != null) {
+            errorMsg = name.concat("不能为空");
+        } else {
+            errorMsg = nullDesc;
+        }
         // 如果对象为空，抛出异常
         if (obj == null) {
-            throw new Exception(nullDesc);
+            throw new Exception(errorMsg);
         }
         final Class clazz = obj.getClass();
         // 字符串判断是否是空串
         if (clazz == String.class) {
             if (obj.toString().trim().equals("")) {
-                throw new Exception(nullDesc);
+                throw new Exception(errorMsg);
             }
         }
 
@@ -125,10 +132,10 @@ public class CheckUtils {
             int count = 0;
             for (Object property : (Iterable) obj) {
                 count++;
-                checkObj(property);
+                checkObj(property, name);
             }
             if (count == 0) {
-                throw new Exception(nullDesc);
+                throw new Exception(errorMsg);
             }
             return;
         }
@@ -136,7 +143,7 @@ public class CheckUtils {
         // 如果是pojo，判断属性是否含有空的
         if (isPojo(clazz)) {
             // 如果不是基本类型，利用内省机制检查字段
-            checkPojo(obj, clazz);
+            checkPojo(obj, clazz, name);
         }
     }
 
