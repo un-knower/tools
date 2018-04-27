@@ -3,7 +3,6 @@ package com.xiafei.tools.spring.springboot.aspect;
 import com.xiafei.tools.common.check.CheckUtils;
 import com.xiafei.tools.exceptions.BizException;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.ArrayUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -101,9 +100,17 @@ public class HttpAspect {
                 reqVos.add((BaseReqVo) arg);
             }
 
-            if (BaseReqVo.class == arg.getClass()
-                    || ArrayUtils.contains(parameterAnnotations[i], CheckUtils.ParamSkipCheck.class)) {
-                continue;
+            if (BaseReqVo.class == arg.getClass()) {
+                boolean find = false;
+                for (Annotation annotation : parameterAnnotations[i]) {
+                    if (annotation.annotationType().equals(CheckUtils.ParamSkipCheck.class)) {
+                        find = true;
+                        break;
+                    }
+                }
+                if (find) {
+                    continue;
+                }
             }
             argsToCheck.add(arg);
         }

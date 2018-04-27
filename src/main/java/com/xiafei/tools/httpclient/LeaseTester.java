@@ -293,6 +293,6 @@ public class LeaseTester {
         reqMap.put("data", data);
         reqMap.put("systemId", "FUND_JX");
         final String reqJson = JsonUtil.toJson(reqMap);
-        System.out.println("服务器返回：" + PostUtil.postJson(URL, reqJson));
+//        System.out.println("服务器返回：" + PostUtil.postJson(URL, reqJson));
     }
 }

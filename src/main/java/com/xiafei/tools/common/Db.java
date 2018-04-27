@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 /**
  * <P>Description: 数据库工具. </P>
@@ -30,6 +31,50 @@ public final class Db {
      * orcle-jdbc驱动名称.
      */
     private static final String ORACLE_JDBC_DRIVER_NAME = "oracle.jdbc.driver.OracleDriver";
+
+    public static void main(String[] args) throws SQLException {
+        final Connection connection1 = getMysqlConn("jdbc:mysql://192.168.130.221:3306/lease?useUnicode=true&characterEncoding=" +
+                        "UTF-8&allowMultiQueries=true&rewriteBatchedStatements=true&useSSL=true",
+                "root", "root");
+        connection1.setAutoCommit(false);
+        final Connection connection2 = getMysqlConn("jdbc:mysql://192.168.130.221:3306/lease?useUnicode=true&characterEncoding=" +
+                        "UTF-8&allowMultiQueries=true&rewriteBatchedStatements=true&useSSL=true",
+                "root", "root");
+        connection2.setAutoCommit(false);
+
+        log.info("数据库初始化成功");
+        for (int i = 0; i < 10000; i++) {
+            new Thread(() -> {
+                try {
+                    Statement sm = connection1.createStatement();
+                    sm.addBatch("UPDATE  `LOCK` SET `data`=3 WHERE `data`=3 AND coop_code = '1'");
+                    sm.addBatch(" UPDATE `LOCK` SET `data2` = `data2`+1 WHERE `data`=3 AND `data3`=0 AND SERVICE = '1'");
+                    sm.executeBatch();
+                    connection1.commit();
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+
+            }).start();
+            new Thread(() -> {
+                try {
+
+                    Statement sm = connection2.createStatement();
+                    sm.addBatch("UPDATE  `LOCK` SET `data`=3 WHERE `data`=3 AND coop_code = '2'");
+                    sm.addBatch(" UPDATE `LOCK` SET `data2` = `data2`+1 WHERE `data`=3 AND `data3`=0 AND SERVICE = '2'");
+                    sm.executeBatch();
+                    connection2.commit();
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }).start();
+
+        }
+    }
 
     /**
      * 获得mysql数据库连接.
