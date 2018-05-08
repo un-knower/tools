@@ -36,27 +36,27 @@
 
     <!--&lt;!&ndash; Kafka输出（这是高效但不能保证日志全部输出到Kafka的方案，相比应用程序的阻塞，少量日志的丢失是可以接受的） &ndash;&gt;-->
     <!--<appender name="KAFKA" class="com.github.danielwegener.logback.kafka.KafkaAppender">-->
-        <!--<encoder class="com.github.danielwegener.logback.kafka.encoding.PatternLayoutKafkaMessageEncoder">-->
-            <!--<layout class="ch.qos.logback.classic.PatternLayout">-->
-                <!--<pattern>${KAFKA_LOG_PATTERN}</pattern>-->
-            <!--</layout>-->
-        <!--</encoder>-->
-        <!--&lt;!&ndash; 主题 &ndash;&gt;-->
-        <!--<topic>logstash-${CONTEXT_NAME}1</topic>-->
-        <!--&lt;!&ndash; 日志消息按HostName分区，保证有序性 &ndash;&gt;-->
-        <!--<keyingStrategy class="com.github.danielwegener.logback.kafka.keying.HostNameKeyingStrategy"/>-->
-        <!--&lt;!&ndash; 使用异步传输。应用程序线程不会被阻塞 &ndash;&gt;-->
-        <!--<deliveryStrategy class="com.github.danielwegener.logback.kafka.delivery.AsynchronousDeliveryStrategy"/>-->
-        <!--<producerConfig>bootstrap.servers=${KAFKA_BOOTSTRAP_SERVERS}</producerConfig>-->
-        <!--&lt;!&ndash; 不等待broker确认接收  &ndash;&gt;-->
-        <!--<producerConfig>acks=0</producerConfig>-->
-        <!--&lt;!&ndash; 等待1000毫秒并收集日志消息，然后将其批量发送 &ndash;&gt;-->
-        <!--&lt;!&ndash;<producerConfig>linger.ms=1000</producerConfig>&ndash;&gt;-->
-        <!--&lt;!&ndash; 即使生产者缓冲区（默认大小32MB，可通过buffer.memory属性修改）已满，也不要阻止应用程序，而是开始丢弃消息 &ndash;&gt;-->
-        <!--<producerConfig>block.on.buffer.full=false</producerConfig>-->
-        <!--&lt;!&ndash; 定义一个标识来标记你的客户端 &ndash;&gt;-->
-        <!--<producerConfig>client.id=${CONTEXT_NAME}@${HOSTNAME}</producerConfig>-->
-        <!--&lt;!&ndash; 没有后备<appender-ref> &ndash;&gt;-->
+    <!--<encoder class="com.github.danielwegener.logback.kafka.encoding.PatternLayoutKafkaMessageEncoder">-->
+    <!--<layout class="ch.qos.logback.classic.PatternLayout">-->
+    <!--<pattern>${KAFKA_LOG_PATTERN}</pattern>-->
+    <!--</layout>-->
+    <!--</encoder>-->
+    <!--&lt;!&ndash; 主题 &ndash;&gt;-->
+    <!--<topic>logstash-${CONTEXT_NAME}1</topic>-->
+    <!--&lt;!&ndash; 日志消息按HostName分区，保证有序性 &ndash;&gt;-->
+    <!--<keyingStrategy class="com.github.danielwegener.logback.kafka.keying.HostNameKeyingStrategy"/>-->
+    <!--&lt;!&ndash; 使用异步传输。应用程序线程不会被阻塞 &ndash;&gt;-->
+    <!--<deliveryStrategy class="com.github.danielwegener.logback.kafka.delivery.AsynchronousDeliveryStrategy"/>-->
+    <!--<producerConfig>bootstrap.servers=${KAFKA_BOOTSTRAP_SERVERS}</producerConfig>-->
+    <!--&lt;!&ndash; 不等待broker确认接收  &ndash;&gt;-->
+    <!--<producerConfig>acks=0</producerConfig>-->
+    <!--&lt;!&ndash; 等待1000毫秒并收集日志消息，然后将其批量发送 &ndash;&gt;-->
+    <!--&lt;!&ndash;<producerConfig>linger.ms=1000</producerConfig>&ndash;&gt;-->
+    <!--&lt;!&ndash; 即使生产者缓冲区（默认大小32MB，可通过buffer.memory属性修改）已满，也不要阻止应用程序，而是开始丢弃消息 &ndash;&gt;-->
+    <!--<producerConfig>block.on.buffer.full=false</producerConfig>-->
+    <!--&lt;!&ndash; 定义一个标识来标记你的客户端 &ndash;&gt;-->
+    <!--<producerConfig>client.id=${CONTEXT_NAME}@${HOSTNAME}</producerConfig>-->
+    <!--&lt;!&ndash; 没有后备<appender-ref> &ndash;&gt;-->
     <!--</appender>-->
 
     <!-- 异步输出（文件输出采用异步处理，以提升应用程序的处理效率） -->

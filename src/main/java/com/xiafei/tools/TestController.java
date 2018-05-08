@@ -36,10 +36,10 @@ import java.util.UUID;
 @RequestMapping("/test")
 public class TestController {
 
-//    private static final JvmExCache<Integer> CACHE = new JvmExCache<>(10000L, true, false);
+    //    private static final JvmExCache<Integer> CACHE = new JvmExCache<>(10000L, true, false);
 //    private static int COUNT = 0;
 //    private static int COUNT_POOL = 0;
-        @Resource
+    @Resource
     private Sftp sftp;
 //    @Resource
 //    private JvmCachePool cachePool;
@@ -50,7 +50,7 @@ public class TestController {
 //    @Value("${from}")
 //    private String from;
 
-//    static {
+    //    static {
 //        final ClassPathResource classPathResource = new ClassPathResource("IMG_0004.JPG");
 //        try (InputStream fis = classPathResource.getInputStream();
 //             ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
@@ -136,7 +136,7 @@ public class TestController {
                      6	放款成功
                      7	放款失败
                      */
-                    result.put("status","0");
+                    result.put("status", "0");
                     return result;
                 case "lease_apply_goods_confirm":
                     result.put("retCode", RetCodeEnum.SUCCESS.code);

@@ -37,13 +37,13 @@ public class VelocityConfig {
     }
 
     @Bean
-    public VelocityConfigurer velocityConfigurer(){
+    public VelocityConfigurer velocityConfigurer() {
         VelocityConfigurer bean = new VelocityConfigurer();
         bean.setResourceLoaderPath("/WEB-INF/vm/");
         Properties properties = new Properties();
-        properties.setProperty("input.encoding","UTF-8");
-        properties.setProperty("output.encoding","UTF-8");
-        properties.setProperty("contentType","text/html;charset=UTF-8");
+        properties.setProperty("input.encoding", "UTF-8");
+        properties.setProperty("output.encoding", "UTF-8");
+        properties.setProperty("contentType", "text/html;charset=UTF-8");
         bean.setVelocityProperties(properties);
         return bean;
     }

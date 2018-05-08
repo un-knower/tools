@@ -152,7 +152,7 @@ public final class MapperTemplate extends SourceTemplate {
      */
     private static void addSqlTemplate(ColumnInfo primaryColumn, List<ColumnInfo> columnInfos, List<String> content, final DataBaseTypeEnum dataBaseType) {
         // 先增加全字段模板
-        if(primaryColumn == null){
+        if (primaryColumn == null) {
             content.add("");
             content.add("");
             content.add(getIndent(1) + "<!-- 基础字段 -->");
@@ -168,11 +168,11 @@ public final class MapperTemplate extends SourceTemplate {
             cycleAddColumnName(getIndent(2), columnInfos, content, dataBaseType);
             content.add(getIndent(1) + "</sql>");
 
-        }else{
+        } else {
             content.add("");
             content.add(getIndent(1) + "<!-- 基础字段 -->");
             content.add(getIndent(1) + "<sql id=\"Base_Columns\">");
-            content.add(getIndent(2) + "`"+primaryColumn.getName() + "`,");
+            content.add(getIndent(2) + "`" + primaryColumn.getName() + "`,");
             content.add(getIndent(2) + "<include refid=\"Columns_For_Insert\"/>");
             content.add(getIndent(1) + "</sql>");
 

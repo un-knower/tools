@@ -20,8 +20,8 @@ import java.util.concurrent.TimeUnit;
  * <P>Description: 连接状态监控狗，放在pipeLine中第一个，
  * 当发现当前的链路关闭之后，进行12级指数增长间隔时间的重连尝试.
  * </P>
- * <P>
- *     之所以定义为抽象类是为了类初始化的时候强制使用匿名类实现handlers()方法.
+ * <p>
+ * 之所以定义为抽象类是为了类初始化的时候强制使用匿名类实现handlers()方法.
  * </P>
  * <P>CALLED BY:   齐霞飞 </P>
  * <P>UPDATE BY:   齐霞飞 </P>

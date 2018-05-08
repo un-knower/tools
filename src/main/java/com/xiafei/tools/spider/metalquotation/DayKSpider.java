@@ -270,9 +270,9 @@ public class DayKSpider {
             if (value.equals("AuT+D")) {
                 value = "Au(T+D)";
             } else if (value.contains("u(T+D)")) {
-                if(value.contains("m")){
+                if (value.contains("m")) {
                     value = "mAu(T+D)";
-                }else{
+                } else {
                     value = "Au(T+D)";
                 }
             } else if (value.contains("g(T+D)")) {

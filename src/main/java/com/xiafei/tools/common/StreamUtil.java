@@ -37,7 +37,7 @@ public class StreamUtil {
     /**
      * 关闭流.
      *
-     * @param streams  流
+     * @param streams 流
      */
     public static void closeStream(final Closeable... streams) {
 

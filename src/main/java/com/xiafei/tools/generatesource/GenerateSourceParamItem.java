@@ -118,14 +118,14 @@ public class GenerateSourceParamItem {
     @Override
     public String toString() {
         return "GenerateSourceParamItem{" +
-            "dataBaseType=" + dataBaseType +
-            ", url='" + url + '\'' +
-            ", user='" + user + '\'' +
-            ", password='" + password + '\'' +
-            ", tableName='" + tableName + '\'' +
-            ", tableSchema='" + tableSchema + '\'' +
-            ", className='" + className + '\'' +
-            ", classDescription='" + classDescription + '\'' +
-            '}';
+                "dataBaseType=" + dataBaseType +
+                ", url='" + url + '\'' +
+                ", user='" + user + '\'' +
+                ", password='" + password + '\'' +
+                ", tableName='" + tableName + '\'' +
+                ", tableSchema='" + tableSchema + '\'' +
+                ", className='" + className + '\'' +
+                ", classDescription='" + classDescription + '\'' +
+                '}';
     }
 }

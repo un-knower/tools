@@ -69,18 +69,18 @@ public class TestUtils {
     public static void main(String[] args) throws IllegalAccessException, InterruptedException {
 
         List<byte[]> oom = new ArrayList<>();
-        try{
+        try {
 
             for (int i = 0; i < 1000; i++) {
-                oom.add(new byte[1024*1024]);
+                oom.add(new byte[1024 * 1024]);
             }
-        }catch (Throwable e){
+        } catch (Throwable e) {
             System.out.println("捕获到异常了");
             new Thread(new Runnable() {
                 @Override
                 public void run() {
                     List<byte[]> oom2 = new ArrayList<>();
-                    oom2.add(new byte[1024*1024]);
+                    oom2.add(new byte[1024 * 1024]);
                     System.out.println("另一个线程执行");
                     System.out.println(oom2.toString());
 

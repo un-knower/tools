@@ -38,6 +38,7 @@
 </table>
 <div style="height:200px;"></div>
 <div class="signArea" style="text-align:left;">承租人签章：$!{data.userSignImg}</div>
-<div class="signArea" style="text-align:right">出卖人签章：<span style="color:white;">jxjzsignhere</span><span style="color:white;">万恶的占位符</span></div>
+<div class="signArea" style="text-align:right">出卖人签章：<span style="color:white;">jxjzsignhere</span><span
+        style="color:white;">万恶的占位符</span></div>
 </body>
 </html>

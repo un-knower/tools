@@ -6,6 +6,8 @@ import org.apache.http.HttpHost;
 import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
 import org.apache.http.ParseException;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.CookieStore;
 import org.apache.http.client.CredentialsProvider;
 import org.apache.http.client.config.AuthSchemes;
@@ -116,6 +118,10 @@ public class HttpClientPool {
                 setSocketTimeout(10000).
                 build();
         credentialsProvider = new BasicCredentialsProvider();
+        // 如果服务器需要验证
+//        credentialsProvider.setCredentials(
+//                new AuthScope("httpbin.org", 80), new UsernamePasswordCredentials("userName", "password"));
+
 
         // 响应处理工场
         final HttpMessageParserFactory<HttpResponse> responseParserFactory = new DefaultHttpResponseParserFactory() {

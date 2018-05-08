@@ -7,7 +7,7 @@
  * <P> 包内文件dayK.txt --> 从页面上解析出来的日K数据文件 </P>
  * <P> 包内文件[dayK/monthK/weekK]InsertSql.txt --> 分析从页面上解析出的日K数据生成贵金属行情项目所需的
  * 日K、周K、月K，的插入数据库sql语句。 </P>
- * <p>
+ *
  * <P>CALLED BY:   齐霞飞 </P>
  * <P>UPDATE BY:   齐霞飞 </P>
  * <P>CREATE DATE: 2017/8/23</P>

@@ -52,7 +52,7 @@ public class DayKTest {
                             System.out.println("发现并未改成mAu(T+D)" + line);
                         }
                     }
-                }else {
+                } else {
                     lastTimeDay = timeDay;
                     autdCount = 0;
                 }

@@ -72,10 +72,10 @@ public class ColumnInfo {
     @Override
     public String toString() {
         return "ColumnInfo{" +
-            "name='" + name + '\'' +
-            ", type='" + type + '\'' +
-            ", comment='" + comment + '\'' +
-            ", key='" + key + '\'' +
-            '}';
+                "name='" + name + '\'' +
+                ", type='" + type + '\'' +
+                ", comment='" + comment + '\'' +
+                ", key='" + key + '\'' +
+                '}';
     }
 }

@@ -63,7 +63,7 @@ public final class RandomUtils extends Random {
         // 如果指定随机数长度小于等于本地防重数长度，直接得到结果
         if (randomDigit <= localPreventDuplicateNumberLength) {
             return System.currentTimeMillis()
-                + getLocalPreventDuplicateNumber().substring(localPreventDuplicateNumberLength - randomDigit);
+                    + getLocalPreventDuplicateNumber().substring(localPreventDuplicateNumberLength - randomDigit);
         }
 
         // int 最大数214748364，十位，将指定随机数长度按不大于9每份拆分。
@@ -81,7 +81,7 @@ public final class RandomUtils extends Random {
         returnSb.append(getLocalPreventDuplicateNumber());
         // 生成modMaxPartSize位随机数
         returnSb.append(StringUtils.fillZeroLeftToDigit(
-            (int) (Math.random() * Math.pow(10, modMaxPartSize)), modMaxPartSize));
+                (int) (Math.random() * Math.pow(10, modMaxPartSize)), modMaxPartSize));
         // 循环生成divideMaxPartSize位随机数
         for (int i = 0; i < divideMaxPartSize; i++) {
             returnSb.append(StringUtils.fillZeroLeftToDigit((int) (Math.random() * maxRandomBase), maxPartSize));
@@ -106,6 +106,6 @@ public final class RandomUtils extends Random {
             PREVENT_DUPLICATE_NUMBER_LOCK.unlock();
         }
         return StringUtils.fillZeroLeftToDigit(preventDuplicateNumber,
-            String.valueOf(PREVENT_DUPLICATE_NUMBER_CYCLE).length());
+                String.valueOf(PREVENT_DUPLICATE_NUMBER_CYCLE).length());
     }
 }

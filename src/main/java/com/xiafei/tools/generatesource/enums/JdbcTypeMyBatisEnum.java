@@ -52,13 +52,13 @@ public enum JdbcTypeMyBatisEnum {
         }
     }),
 
-    DATALINK("DATALINK",Collections.EMPTY_LIST),
+    DATALINK("DATALINK", Collections.EMPTY_LIST),
     DATE("DATE", new ArrayList<String>() {
         {
             add("DATE");
         }
     }),
-    DATETIMEOFFSET("DATETIMEOFFSET",Collections.EMPTY_LIST),
+    DATETIMEOFFSET("DATETIMEOFFSET", Collections.EMPTY_LIST),
     DECIMAL("DECIMAL", new ArrayList<String>() {
         {
             add("DECIMAL");

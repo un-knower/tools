@@ -1,10 +1,8 @@
 package com.xiafei.tools;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.xiafei.tools.common.CloneUtil;
 import com.xiafei.tools.common.check.CheckUtils;
 import lombok.Data;
-import org.apache.commons.lang3.SerializationUtils;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +10,7 @@ import java.io.Serializable;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.List;
+import java.util.Random;
 
 /**
  * <P>Description: . </P>
@@ -43,19 +42,29 @@ public class Test implements Serializable {
 //        final byte[] hardwareAddress = byInetAddress.getHardwareAddress();
 //        System.out.println(ArrayUtils.toString(hardwareAddress));
 //        System.out.println(Arrays.toString(hardwareAddress));
-        final Test obj = new Test();
+//        final Test obj = new Test();
+//        long start = System.currentTimeMillis();
+//        final int times = 1000000;
+//        for (int i = 0; i < times; i++) {
+//            SerializationUtils.clone(obj);
+//        }
+//        System.out.println("SerializationUtils 耗时:" + (System.currentTimeMillis() - start));
+//        start = System.currentTimeMillis();
+//        for (int i = 0; i < times; i++) {
+//            CloneUtil.clone(obj);
+//        }
+//        System.out.println("CloneUtil 耗时:" + (System.currentTimeMillis() - start));
+
         long start = System.currentTimeMillis();
-        final int times = 1000000;
-        for (int i = 0; i < times; i++) {
-            SerializationUtils.clone(obj);
-        }
-        System.out.println("SerializationUtils 耗时:" + (System.currentTimeMillis() - start));
-        start = System.currentTimeMillis();
-        for (int i = 0; i < times; i++) {
-            CloneUtil.clone(obj);
+
+        for (int i = 0; i < 1000000; i++) {
+            final String code = String.format("%06d", new Random().nextInt(999999));
+//            System.out.println(code);
+            if (code.length() != 6) {
+                throw new RuntimeException();
+            }
         }
         System.out.println("CloneUtil 耗时:" + (System.currentTimeMillis() - start));
-
     }
 
     @Scheduled(cron = "*/30 * * * * ?")

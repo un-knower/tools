@@ -6,7 +6,11 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.annotation.ElementType;
@@ -166,9 +170,48 @@ public class CheckUtils {
     }
 
     public static void main(String[] args) throws Exception {
-        final String json = "{\"userSignSvgBase64\":\"PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+PCFET0NUWVBFIHN2ZyBQVUJMSUMgIi0vL1czQy8vRFREIFNWRyAxLjEvL0VOIiAiaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkIj48c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmVyc2lvbj0iMS4xIiB3aWR0aD0iMjk1IiBoZWlnaHQ9IjExMyI+PHBhdGggZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDAwMDAwIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgZD0iTSAxNjMgMjYgYyAtMC43NyAtMC4zMSAtMjkuOTMgLTE0Ljg1IC00NCAtMTggYyAtOS40NyAtMi4xMiAtMjEuOTUgLTAuNzYgLTMyIDEgYyAtMTAuMjMgMS43OSAtMjEuMTkgNS44MiAtMzEgMTAgYyAtNy45NiAzLjM5IC0xNS45NiA4LjAyIC0yMyAxMyBjIC02LjQyIDQuNTQgLTEzIDEwLjI2IC0xOCAxNiBjIC0zLjYzIDQuMTcgLTYuNjcgOS44NCAtOSAxNSBjIC0yLjIzIDQuOTQgLTQuODQgMTEuMjYgLTUgMTYgYyAtMC4xMyAzLjg1IDEuNjUgMTAuMDMgNCAxMyBjIDMuMjIgNC4wNyA5Ljc1IDguNTcgMTUgMTEgYyA3LjA2IDMuMjYgMTYuMSA2LjAzIDI0IDcgYyAxMC40MyAxLjI4IDIxLjkxIDAuNjcgMzMgMCBjIDExLjE3IC0wLjY4IDIxLjk1IC0yLjAyIDMzIC00IGMgMTEuNjEgLTIuMDggMjIuODkgLTQuNTMgMzQgLTggYyAxMC4yOCAtMy4yMSAxOS45NSAtNy41MSAzMCAtMTIgYyA5LjA0IC00LjA0IDE3LjY0IC04LjA5IDI2IC0xMyBjIDcuMDIgLTQuMTIgMTMuNiAtOC45MiAyMCAtMTQgYyA1LjAxIC0zLjk4IDkuNTYgLTguMzcgMTQgLTEzIGMgMy42MyAtMy43OCA3LjY4IC03Ljg5IDEwIC0xMiBjIDEuNyAtMyAyLjgzIC03LjYzIDMgLTExIGMgMC4xNCAtMi43MyAtMC4zNyAtNy4xOCAtMiAtOSBjIC0zLjE4IC0zLjU2IC05Ljg4IC04LjQ5IC0xNSAtMTAgYyAtOC4yOCAtMi40NSAtMTkuMzUgLTIuODQgLTI5IC0zIGMgLTkuOTUgLTAuMTcgLTIwLjQxIDAuMTcgLTMwIDIgYyAtMTEgMi4wOSAtMjIuNyA1LjYzIC0zMyAxMCBjIC04Ljk3IDMuOCAtMTguMzIgOS4yIC0yNiAxNSBjIC02Ljg4IDUuMiAtMTMuNzEgMTIuMjUgLTE5IDE5IGMgLTQuMDUgNS4xNyAtOC4xNSAxMi4xMSAtMTAgMTggYyAtMS41MyA0Ljg3IC0xLjk0IDEyLjEyIC0xIDE3IGMgMC44NyA0LjQ4IDMuNzcgMTAuODkgNyAxNCBjIDQuODIgNC42NCAxMy4yMyA5Ljg4IDIwIDEyIGMgOS4wNyAyLjg1IDIwLjUzIDMuMzYgMzEgNCBjIDExLjM5IDAuNyAyMi41NCAwLjY1IDM0IDAgYyAxMi4yMSAtMC43IDIzLjg1IC0yLjA2IDM2IC00IGMgMTMuMzYgLTIuMTQgMjUuNTYgLTQuOTkgMzkgLTggYyAxMi44NiAtMi44OCAyNC42MSAtNS43IDM3IC05IGwgOCAtMyIvPjwvc3ZnPg==\",\"bankCardPhone\":\"17719226406\",\"validateCode\":\"456789\",\"salesmanPhone\":\"17719226406\",\"channel\":\"20180403144904003070A08000A00001\",\"amount\":628200,\"applyNo\":\"2018042519313400234C0A882DF00015\",\"period\":\"18\",\"cardNo\":\"123456789123456789\",\"bankBranchName\":\"gvvv\",\"goodsList\":[{\"key\":\"20180403154535007810A08000A00006\",\"value\":1}],\"bLImgPath\":\"/files/apply/2018042519313400234C0A882DF00015/BUSINESS_LICENSE/1524655909046.jpg\",\"bLInfo\":{\"coName\":\"北京三快科技有限公司\",\"opState\":\"开业\",\"regAddr\":\"北京市海淀区海淀苏州街18号院2楼507\",\"legalPerson\":\"王兴\",\"regCapital\":\"300000000\",\"regDate\":\"20070410\",\"termStart\":\"20070410\",\"termEnd\":\"20270409\",\"opScope\":\"技术开发、技术服务、技术转让、技术咨询；经济贸易咨询；基础软件服务、应用软件服务；设计、制作、代理、发布广告；网上销售日用杂货、避孕器具（避孕药除外）、通讯设备、五金、交电、文化用品、体育用品、机械设备、电子产品、计算机软件及辅助设备、首饰、家用电器、家具、汽车摩托车零配件、针纺织品、服装、化妆品及卫生用品、花、草及观赏植物、工艺品、钟表、眼镜、玩具、不再分装的包装种子、化肥、农药、陶瓷制品、橡胶及塑料制品、仪器仪表、卫生洁具、医疗器械I类；网上门票销售代理、火车票销售代理；酒店订房服务；互联网信息服务不含新闻、出版、教育、医疗保健、药品、医疗器械、含电子公告服务（电信企业许可证有效期至2017年11月20日）；销售食品；从事互联网文化活动。（企业依法自主选择经营项目，开展经营活动；依法须经批准的项目，经相关部门批准后依批准的内容开展经营活动；不得从事本市产业政策禁止和限制类项目的经营活动。）\",\"coType\":\"有限责任公司(自然人投资或控股)\",\"trade\":\"科技推广和应用服务业\",\"apprDate\":\"20180326\",\"staff\":\"25\"},\"siteType\":\"2\",\"cSLImgPath\":\"/files/apply/2018042519313400234C0A882DF00015/CATERING_LICENSE/1524655929641.jpg\",\"cLInfo\":{\"licenceNo\":\"55\",\"coName\":\"快快快\",\"legalPerson\":\"快快快\",\"addr\":\"看看\",\"issueDate\":\"20180412\",\"issueAuthority\":\"快快快\",\"opScope\":\"斤斤计较\",\"termStart\":\"20180409\",\"termEnd\":\"20180413\"},\"idCardInfo\":{\"name\":\"闫毅恒\",\"sex\":\"男\",\"nation\":\"汉\",\"addr\":\"河南省汝阳县蔡店乡闫村1组\",\"idNo\":\"410326199201036753\",\"termStart\":\"20170629\",\"termEnd\":\"20270629\",\"issueAuthority\":\"汝阳县公安局\"},\"mateIdCardInfo\":null,\"marStatus\":0,\"workYears\":\"69\",\"residentStatus\":1,\"residentYear\":1,\"highestEdu\":30,\"gradTime\":\"201804\",\"preTaxIncome\":2500,\"phone\":\"17090024334\",\"homeAddr\":\"哦墨迹\",\"domicileAddr\":\"快快快\",\"domicileType\":1,\"fixedPhone\":\"205-25369996\",\"email\":\"2588@qq.com\",\"matePhone\":\"\",\"mateWork\":\"\",\"fLinkmanName\":\"njjh\",\"fLinkmanRel\":\"0\",\"fLinkmanPhone\":\"17090024334\",\"sLinkmanName\":\"\",\"sLinkmanRel\":\"\",\"sLinkmanPhone\":\"\",\"sitePrtyCertPathList\":null,\"siteContractPathList\":null,\"sitePhotePathList\":null}";
-        KryApplyReqVo vo = JsonUtil.fromJson(json, KryApplyReqVo.class);
-        checkNull(vo);
+
+        checkNull(new MultipartFile() {
+            @Override
+            public String getName() {
+                return "test";
+            }
+
+            @Override
+            public String getOriginalFilename() {
+                return "test";
+            }
+
+            @Override
+            public String getContentType() {
+                return "test";
+            }
+
+            @Override
+            public boolean isEmpty() {
+                return false;
+            }
+
+            @Override
+            public long getSize() {
+                return 0;
+            }
+
+            @Override
+            public byte[] getBytes() throws IOException {
+                return new byte[0];
+            }
+
+            @Override
+            public InputStream getInputStream() throws IOException {
+                return new FileInputStream(new File("./temp/APPLY_CONTRACT.pdf"));
+            }
+
+            @Override
+            public void transferTo(final File dest) throws IOException, IllegalStateException {
+
+            }
+        });
     }
 
 

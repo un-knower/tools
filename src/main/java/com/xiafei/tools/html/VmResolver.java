@@ -1,8 +1,10 @@
 package com.xiafei.tools.html;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.StringWriter;
@@ -62,6 +64,26 @@ public class VmResolver {
         ve.evaluate(context, writer, "", template); // 关键方法
 
         return writer.toString();
+    }
+
+    /**
+     * 使用velocity引擎解析指定路径下的文件模板
+     *
+     * @param template 模板文件内容
+     * @param params   参数
+     * @return 解析后的结果
+     */
+    public static String parse(byte[] template, Map<String, Object> params) {
+
+        ByteArrayInputStream bis = null;
+        try {
+            bis = new ByteArrayInputStream(template);
+            return parse(bis, params);
+
+        } finally {
+            IOUtils.closeQuietly(bis);
+        }
+
     }
 
     public static void main(String[] args) {

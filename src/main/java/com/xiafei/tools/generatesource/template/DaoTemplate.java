@@ -54,7 +54,7 @@ public final class DaoTemplate extends SourceTemplate {
         ColumnInfo primaryColumn = null;
         for (ColumnInfo info : columnInfos) {
             if (item.getDataBaseType() == DataBaseTypeEnum.MYSQL
-                && ColumnKeyEnum.instance(info.getKey()) == ColumnKeyEnum.MYSQL_PRIMARY) {
+                    && ColumnKeyEnum.instance(info.getKey()) == ColumnKeyEnum.MYSQL_PRIMARY) {
                 primaryColumn = info;
             }
         }
@@ -93,8 +93,8 @@ public final class DaoTemplate extends SourceTemplate {
         content.add(getIndent(1) + " * @return 根据主键查询到的对象");
         content.add(getIndent(1) + " */");
         content.add(getIndent(1) + domainClassName + " get("
-            + JdbcTypeJavaTypeEnum.instance(primaryColumn.getType()).javaType
-            + " " + primaryKeyName + ");");
+                + JdbcTypeJavaTypeEnum.instance(primaryColumn.getType()).javaType
+                + " " + primaryKeyName + ");");
     }
 
     /**
@@ -112,7 +112,7 @@ public final class DaoTemplate extends SourceTemplate {
         content.add(getIndent(1) + " * @return 更新where条件影响条数");
         content.add(getIndent(1) + " */");
         content.add(getIndent(1) + "int update(" + domainClassName + " "
-            + StringUtils.firstCharToLower(domainClassName) + ");");
+                + StringUtils.firstCharToLower(domainClassName) + ");");
     }
 
     /**

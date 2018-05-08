@@ -28,6 +28,7 @@ public class LeaseTester {
 //    private static final String URL = "http://localhost:9888/lease/service/toFund";
 
     private static final String APPLY_NO = "2018032618100100844C0A882DF00048";
+
     public static void main(String[] args) {
         // 状态回调测试
         statusTest();
@@ -109,7 +110,7 @@ public class LeaseTester {
 
         final Map<String, Object> infoMap0 = new TreeMap<>();
         result.add(infoMap0);
-        final String deductNo = UUID.randomUUID().toString().replace("-","");
+        final String deductNo = UUID.randomUUID().toString().replace("-", "");
         infoMap0.put("applyNo", APPLY_NO);
         infoMap0.put("deductNo", deductNo);
         //0-客户银行卡，1-保证金账户

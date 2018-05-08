@@ -75,7 +75,7 @@ public class ExcelUtil {
      * @throws IOException 导出失败
      */
     public static void export(final String sheetName, final String title, final String fileName, final String[] colsName,
-                       final String[][] data, final HttpServletResponse response, final String uuid)
+                              final String[][] data, final HttpServletResponse response, final String uuid)
             throws IOException {
         response.setContentType("application/ms-excel;charset=UTF-8");
         response.setHeader("Content-Disposition", "attachment;filename="
@@ -96,7 +96,7 @@ public class ExcelUtil {
      * @throws IOException 导出失败
      */
     private static void export(final String sheetName, final String title, final String fileName, final String[] colsName,
-                        final String[][] data, final OutputStream out, final String uuid) throws IOException {
+                               final String[][] data, final OutputStream out, final String uuid) throws IOException {
         // 第一步，创建一个webbook
         Workbook wb;
         if (fileName.endsWith(".xls")) {

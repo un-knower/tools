@@ -26,6 +26,7 @@ import com.itextpdf.tool.xml.html.CssAppliersImpl;
 import com.itextpdf.tool.xml.html.Tags;
 import com.itextpdf.tool.xml.pipeline.html.HtmlPipelineContext;
 import lombok.Data;
+import org.apache.commons.io.IOUtils;
 import org.icepdf.core.util.GraphicsRenderingHints;
 
 import javax.imageio.ImageIO;
@@ -59,6 +60,15 @@ public class PdfUtils {
     public static final String KEYSTORE = "./temp/dlt.p12";
     public static final char[] PASSWORD = "111111".toCharArray();//keystory密码
 
+    private static MyFontsProvider PRI_FONT;
+
+    static {
+        PRI_FONT = new MyFontsProvider();
+        PRI_FONT.addFontSubstitute("lowagie", "garamond");
+        PRI_FONT.setUseUnicode(true);
+    }
+
+
     public static void main(String[] args) throws Exception {
         html2Pdf(new FileInputStream(new File("./temp/contract.vm")), new FileOutputStream(new File("./temp/test.pdf")));
 //        try {
@@ -87,6 +97,19 @@ public class PdfUtils {
 //        pdf2Img(new FileInputStream(new File("./temp/APPLY_CONTRACT.pdf")), new FileOutputStream(new File("./temp/APPLY_CONTRACT-img.jpg")));
     }
 
+
+    public static byte[] html2Pdf(final String html) {
+        final InputStream is = IOUtils.toInputStream(html);
+        return html2Pdf(is);
+    }
+
+    public static byte[] html2Pdf(final InputStream in) {
+        final ByteArrayOutputStream os = new ByteArrayOutputStream();
+        html2Pdf(in, os);
+        return os.toByteArray();
+    }
+
+
     /**
      * 使用 iText XML Worker实现HTML转PDF
      * itextpdf-5.5.6.jar
@@ -94,27 +117,29 @@ public class PdfUtils {
      * @param htmlIn html输入流
      * @param pdfOut pdf输出流
      */
-    public static void html2Pdf(final InputStream htmlIn, final OutputStream pdfOut) throws Exception {
-        // 使用我们的字体提供器，并将其设置为unicode字体样式
-        final MyFontsProvider fontProvider = new MyFontsProvider();
-        fontProvider.addFontSubstitute("lowagie", "garamond");
-        fontProvider.setUseUnicode(true);
-        final CssAppliers cssAppliers = new CssAppliersImpl(fontProvider);
-        final HtmlPipelineContext htmlContext = new HtmlPipelineContext(cssAppliers);
-        htmlContext.setTagFactory(Tags.getHtmlTagProcessorFactory());
+    public static void html2Pdf(final InputStream htmlIn, final OutputStream pdfOut) {
 
         // 声明文档
         final Document document = new Document();
-        final PdfWriter pdfwriter = PdfWriter.getInstance(document, pdfOut);
-        pdfwriter.setViewerPreferences(PdfWriter.HideToolbar);
-        // open一定要在pdfwriter声明之后，否则不生效
-        document.open();
+        try {
+            final PdfWriter pdfwriter = PdfWriter.getInstance(document, pdfOut);
+            pdfwriter.setViewerPreferences(PdfWriter.HideToolbar);
+            // open一定要在pdfwriter声明之后，否则不生效
+            document.open();
 
-        // 输出到文档
-        XMLWorkerHelper.getInstance().getDefaultCssResolver(true);
-        XMLWorkerHelper.getInstance().parseXHtml(pdfwriter, document, htmlIn, null, Charset.forName("UTF-8"), fontProvider);
-        // close会将流刷新到文档，一定要有
-        document.close();
+            final CssAppliers cssAppliers = new CssAppliersImpl(PRI_FONT);
+            final HtmlPipelineContext htmlContext = new HtmlPipelineContext(cssAppliers);
+            htmlContext.setTagFactory(Tags.getHtmlTagProcessorFactory());
+
+            // 输出到文档
+            XMLWorkerHelper.getInstance().getDefaultCssResolver(true);
+            XMLWorkerHelper.getInstance().parseXHtml(pdfwriter, document, htmlIn, null,
+                    Charset.forName("UTF-8"), PRI_FONT);
+            // close会将流刷新到文档，一定要有
+            document.close();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 
     }
 
@@ -182,22 +207,27 @@ public class PdfUtils {
      * @param imgOut 图片输出流
      * @throws Exception 各种异常
      */
-    public static void pdf2Img(final InputStream pdfIn, final OutputStream imgOut) throws Exception {
-        org.icepdf.core.pobjects.Document document = new org.icepdf.core.pobjects.Document();
-        document.setInputStream(pdfIn, "");
-        float scale = 1.1f;// 缩放比例（大图）
-        // float scale = 0.2f;// 缩放比例（小图）
-        float rotation = 0f;// 旋转角度
-        for (int i = 0; i < document.getNumberOfPages(); i++) {
-            BufferedImage image = (BufferedImage) document.getPageImage(i,
-                    GraphicsRenderingHints.SCREEN,
-                    org.icepdf.core.pobjects.Page.BOUNDARY_CROPBOX,
-                    rotation, scale);
-            // 这里png作用是：格式是jpg但有png清晰度
-            ImageIO.write(image, "png", imgOut);
-            image.flush();
+    public static void pdf2Img(final InputStream pdfIn, final OutputStream imgOut) {
+        try {
+            org.icepdf.core.pobjects.Document document = new org.icepdf.core.pobjects.Document();
+            document.setInputStream(pdfIn, "");
+            float scale = 1.1f;// 缩放比例（大图）
+            // float scale = 0.2f;// 缩放比例（小图）
+            float rotation = 0f;// 旋转角度
+            for (int i = 0; i < document.getNumberOfPages(); i++) {
+                BufferedImage image = (BufferedImage) document.getPageImage(i,
+                        GraphicsRenderingHints.SCREEN,
+                        org.icepdf.core.pobjects.Page.BOUNDARY_CROPBOX,
+                        rotation, scale);
+                // 这里png作用是：格式是jpg但有png清晰度
+                ImageIO.write(image, "png", imgOut);
+                image.flush();
+            }
+            document.dispose();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
-        document.dispose();
+
     }
 
     private static void signInner(final byte[] pdfIn, final OutputStream signedPdfOut, final byte[] signedImg,
