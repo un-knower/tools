@@ -10,7 +10,9 @@ import java.io.Serializable;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.List;
-import java.util.Random;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * <P>Description: . </P>
@@ -25,6 +27,8 @@ import java.util.Random;
  */
 @Service
 public class Test implements Serializable {
+
+    private static ExecutorService POOL = Executors.newFixedThreadPool(4);
 
     public static void main(String[] args) throws UnknownHostException, SocketException {
 //        String json = "{\"systemId\":\"AGENCY_RM\",\"data\":{\"applyNo\":\"2018041114214100797C0A882DF00017\",\"confirmContractPath\":\"/files/apply/2018041114214100797C0A882DF00017/GOODS_CONFIRM_CONTRACT/GOODS_CONFIRM_CONTRACT.pdf\",\"goodsList\":[{\"goodsModel\":\"EP901\",\"serialNo\":\"1,2\",\"softVersion\":\"高级版\"}]},\"service\":\"lease_apply_goods_confirm\",\"sign\":\"aQYaFa1m1pvFZsu+Qa4dQH/PWdb9YV2cTgdgvSN29fjDwq4MBHTEiS5+0l3N1IFyyI8EKpMOSTFqnfDHNaQXjFJg2LRdidbiILKJGA1u6/cVtlMFsamI+qmprPmDjUnR0HxdLrIwHCIJu2jQaTCxMNRoxgagfU/BfMVeXBQhBIE\\u003d\",\"version\":\"1.0\",\"serialNo\":\"2018041118473700204C0A882DF00048\"}";
@@ -55,16 +59,37 @@ public class Test implements Serializable {
 //        }
 //        System.out.println("CloneUtil 耗时:" + (System.currentTimeMillis() - start));
 
-        long start = System.currentTimeMillis();
+//        long start = System.currentTimeMillis();
+//
+//        for (int i = 0; i < 1000000; i++) {
+//            final String code = String.format("%06d", new Random().nextInt(999999));
+////            System.out.println(code);
+//            if (code.length() != 6) {
+//                throw new RuntimeException();
+//            }
+//        }
+//        System.out.println("CloneUtil 耗时:" + (System.currentTimeMillis() - start));
 
-        for (int i = 0; i < 1000000; i++) {
-            final String code = String.format("%06d", new Random().nextInt(999999));
-//            System.out.println(code);
-            if (code.length() != 6) {
-                throw new RuntimeException();
+        CountDownLatch c = new CountDownLatch(2);
+        POOL.execute(new Runnable() {
+            @Override
+            public void run() {
+                c.countDown();
             }
+        });
+
+        POOL.execute(new Runnable() {
+            @Override
+            public void run() {
+                c.countDown();
+            }
+        });
+        try {
+            c.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
-        System.out.println("CloneUtil 耗时:" + (System.currentTimeMillis() - start));
+        System.out.println("执行完了");
     }
 
     @Scheduled(cron = "*/30 * * * * ?")

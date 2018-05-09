@@ -102,6 +102,32 @@
             <groupId>org.icepdf.os</groupId>
             <artifactId>icepdf-viewer</artifactId>
             <version>6.2.2</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>batik</groupId>
+                    <artifactId>batik-awt-util</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>batik</groupId>
+                    <artifactId>batik-dom</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>batik</groupId>
+                    <artifactId>batik-svg-dom</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>batik</groupId>
+                    <artifactId>batik-svggen</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>batik</groupId>
+                    <artifactId>batik-util</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>batik</groupId>
+                    <artifactId>batik-xml</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <!-- pdf 转图片 end -->
         <dependency>

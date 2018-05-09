@@ -5,8 +5,10 @@ import com.jcraft.jsch.SftpException;
 import com.xiafei.tools.common.JsonUtil;
 import com.xiafei.tools.common.encrypt.rsa.RSAUtil;
 import com.xiafei.tools.sftp.Sftp;
+import com.xiafei.tools.svg.SvgUtil;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.batik.transcoder.TranscoderException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -98,6 +101,11 @@ public class TestController {
 //        return JSONUtil.toJson(sftpProperties);
 //    }
 
+
+    @RequestMapping(value = "/svg")
+    public void svg(String svg, HttpServletResponse response) throws TranscoderException, IOException {
+        response.getOutputStream().write(SvgUtil.convertToPng(svg));
+    }
 
     /**
      * 金融租赁中介平台mock

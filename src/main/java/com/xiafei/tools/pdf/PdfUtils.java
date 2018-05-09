@@ -32,9 +32,6 @@ import org.icepdf.core.util.GraphicsRenderingHints;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -70,7 +67,9 @@ public class PdfUtils {
 
 
     public static void main(String[] args) throws Exception {
-        html2Pdf(new FileInputStream(new File("./temp/contract.vm")), new FileOutputStream(new File("./temp/test.pdf")));
+
+
+//        html2Pdf(new FileInputStream(new File("./temp/contract.vm")), new FileOutputStream(new File("./temp/test.pdf")));
 //        try {
 //            //读取keystore ，获得私钥和证书链
 //            KeyStore ks = KeyStore.getInstance("PKCS12");
@@ -201,7 +200,7 @@ public class PdfUtils {
     }
 
     /**
-     * pdf转图片.
+     * pdf转图片（多张会转成一张长图）.
      *
      * @param pdfIn  pdf输入流
      * @param imgOut 图片输出流
@@ -209,25 +208,63 @@ public class PdfUtils {
      */
     public static void pdf2Img(final InputStream pdfIn, final OutputStream imgOut) {
         try {
-            org.icepdf.core.pobjects.Document document = new org.icepdf.core.pobjects.Document();
+            final org.icepdf.core.pobjects.Document document = new org.icepdf.core.pobjects.Document();
             document.setInputStream(pdfIn, "");
-            float scale = 1.1f;// 缩放比例（大图）
-            // float scale = 0.2f;// 缩放比例（小图）
-            float rotation = 0f;// 旋转角度
-            for (int i = 0; i < document.getNumberOfPages(); i++) {
-                BufferedImage image = (BufferedImage) document.getPageImage(i,
+            final float scale = 1.1f;// 缩放比例（大图）
+            // final float scale = 0.2f;// 缩放比例（小图）
+            final float rotation = 0f;// 旋转角度
+            final int num = document.getNumberOfPages();
+            final List<BufferedImage> images = new ArrayList<>(num);
+            for (int i = 0; i < num; i++) {
+                final BufferedImage image = (BufferedImage) document.getPageImage(i,
                         GraphicsRenderingHints.SCREEN,
                         org.icepdf.core.pobjects.Page.BOUNDARY_CROPBOX,
                         rotation, scale);
-                // 这里png作用是：格式是jpg但有png清晰度
-                ImageIO.write(image, "png", imgOut);
-                image.flush();
+                images.add(image);
             }
+            toOnePic(images, imgOut);
             document.dispose();
+            IOUtils.closeQuietly(pdfIn);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
 
+    }
+
+    /**
+     * 将多张图片合并成一张长图.
+     *
+     * @param images 多张图片
+     * @param imgOut 图片输出流
+     */
+    private static void toOnePic(final List<BufferedImage> images, final OutputStream imgOut) {
+        if (images == null || images.isEmpty()) {
+            throw new RuntimeException("图片为空");
+        }
+
+        int height = 0;
+        int width = 0;
+        for (BufferedImage image : images) {
+            if (width < image.getWidth()) {
+                width = image.getWidth();
+            }
+            height += image.getHeight();
+        }
+        // 将以上图片合并为一张
+        final BufferedImage result = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        int heightOffset = 0;
+        for (BufferedImage image : images) {
+            final int oneHeight = image.getHeight();
+            final int[] rgb = new int[width * oneHeight];
+            image.getRGB(0, 0, width, oneHeight, rgb, 0, width);
+            result.setRGB(0, heightOffset, width, oneHeight, rgb, 0, width);
+            heightOffset += oneHeight;
+        }
+        try {
+            ImageIO.write(result, "png", imgOut);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private static void signInner(final byte[] pdfIn, final OutputStream signedPdfOut, final byte[] signedImg,
